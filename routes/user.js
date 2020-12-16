@@ -1,6 +1,6 @@
 const { Router } = require('express');
 const router = Router();
-const usersController = require('../controllers/users');
+const resolvers = require('../graphQL/resolvers');
 const { authentication, authorization } = require('../middlewares/auth');
 const { uploader } = require('../middlewares/multer')
 

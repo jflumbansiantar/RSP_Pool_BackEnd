@@ -1,8 +1,8 @@
 const { Router } = require('express');
 const router = Router();
-const usersRoutes = require('./users')
-const roomsRoutes = require('./rooms')
-const bookingsRoutes = require('./bookings');
+const usersRoutes = require('./user')
+const roomsRoutes = require('./room')
+const bookingsRoutes = require('./booking');
 
 router.get('/', (req,res)=>{
     res.status(200).json({

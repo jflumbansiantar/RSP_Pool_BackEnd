@@ -4,9 +4,11 @@ module.exports = buildSchema(`
     type User {
         id: ID!
         email: String!
-        password: String!
+        password: String
         photo: String!
         deleted_at: String!
+        createdAt: String!
+        updatedAt: String!
     }
     type Room {
         id: ID!
@@ -14,6 +16,8 @@ module.exports = buildSchema(`
         room_capacity: String!
         photo: String!
         deleted_at: String!
+        createdAt: String!
+        updatedAt: String!
     }
     type Booking {
         id: ID!
@@ -25,6 +29,8 @@ module.exports = buildSchema(`
         check_in_time: String!
         check_out_time: String!
         deleted_at: String!
+        createdAt: String!
+        updatedAt: String!
     }
 
     input UserDataInput {
@@ -38,8 +44,6 @@ module.exports = buildSchema(`
         photo: String!
     }
     input BookingDataInput {
-        user_id: Int!
-        room_id: Int!
         total_person: Int!
         booking_time: String!
         noted: String!
@@ -51,15 +55,29 @@ module.exports = buildSchema(`
         token: String!
         userId: String!
     }
+    type RoomData {
+        rooms: [Room!]!
+        totalRoom: Int!
+    }
+    type BookingData {
+        bookings: [Booking!]!
+        totalBook: Int!
+    }
 
     type RootQuery {
         login(email: String, password: String!): AuthData!
+        rooms(id: ID!): Room!
+        bookings: BookingData!
+        room(id: ID!): Room!
+        booking(id: ID!): Booking!
+        user: User!
     }
 
     type RootMutation {
         createUser(userInput: UserDataInput): User!
-        createRoom(RoomInput: RoomDataInput): Room!
-        createBooking(BookingInput: BookingDataInput): Booking!
+        createRoom(roomInput: RoomDataInput): Room!
+        createBooking(bookingInput: BookingDataInput): Booking!
+        updateRoom(id: ID!, roomInput: RoomDataInput): Room!
     }
 
     schema{
