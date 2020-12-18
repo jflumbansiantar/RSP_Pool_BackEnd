@@ -1,13 +1,13 @@
 const { Router } = require('express');
 const router = Router();
 const resolvers = require('../graphQL/resolvers');
-const { authentication, authorization } = require('../middlewares/auth');
+const { Authentication, IsAdmin } = require('../middlewares/auth');
 const { uploader } = require('../middlewares/multer')
 
-router.get('/list', authentication, authorization, usersController.getAllUsers)
-router.post('/login', usersController.login)
-router.post('/register', usersController.register)
-router.put('/edit/:id', authentication, uploader.single('image'), usersController.editUsers)
-router.get('/find/:id', authentication, authorization, usersController.findById)
+router.get('/list', Authentication, IsAdmin, resolvers.getAllUsers)
+router.post('/login', resolvers.login)
+router.post('/register', resolvers.register)
+router.put('/edit/:id', Authentication, uploader.single('photo'), resolvers.editUsers)
+router.get('/find/:id', Authentication, IsAdmin, resolvers.findById)
 
 module.exports = router;
