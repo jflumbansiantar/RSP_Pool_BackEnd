@@ -92,15 +92,25 @@ module.exports = {
 			}
 		)
 	},
+	//getAllUser
+	//getUsers
 
 	//CRUD Room
 	createRoom: async function ({ roomInput }, req, res) {
-		if (!req.IsAdmin) {
-			const error = new Error('Not Authenticated');
-			throw error;
-		}
 		const errors = [];
 		if (!validator.isEmpty(roomInput.room_name)) {
+			errors.push({
+				status: false,
+				message: "Invalid Room",
+			})
+		}
+		if (!validator.isEmpty(roomInput.room_capacity)) {
+			errors.push({
+				status: false,
+				message: "Invalid Room",
+			})
+		}
+		if (!validator.isEmpty(roomInput.photo)) {
 			errors.push({
 				status: false,
 				message: "Invalid Room",
@@ -170,12 +180,20 @@ module.exports = {
 		})
 	},
 	updateRoom: async function ({ id, roomInput }, req, res) {
-		if (!req.IsAdmin) {
-			const error = new Error('Not Authenticated');
-			throw error;
-		}
 		const errors = [];
 		if (!validator.isEmpty(roomInput.room_name)) {
+			errors.push({
+				status: false,
+				message: "Invalid Room",
+			})
+		}
+		if (!validator.isEmpty(roomInput.room_capacity)) {
+			errors.push({
+				status: false,
+				message: "Invalid Room",
+			})
+		}
+		if (!validator.isEmpty(roomInput.photo)) {
 			errors.push({
 				status: false,
 				message: "Invalid Room",
@@ -213,10 +231,6 @@ module.exports = {
 
 	},
 	deleteRoom: async function ({ id }, req, res) {
-		if (!req.IsAdmin) {
-			const error = new Error('Not Authenticated');
-			throw error;
-		}
 		const room = await Room.findOne({
 			where: {
 				id
@@ -255,19 +269,26 @@ module.exports = {
 			})
 		}
 		//validator noted (do not empty)
-		if (!validator.isEmpty(bookingInput.room_id)) {
+		if (!validator.isEmpty(bookingInput.noted)) {
 			errors.push({
 				status: false,
 				message: "Invalid Room",
 			})
 		}
-		//validator check_out_time
-		if (!validator.isEmpty(bookingInput.room_id)) {
+		//validator check_in/out_time
+		if (!validator.isEmpty(bookingInput.check_in_time)) {
 			errors.push({
 				status: false,
 				message: "Invalid Room",
 			})
 		}
+		if (!validator.isEmpty(bookingInput.check_out_time)) {
+			errors.push({
+				status: false,
+				message: "Invalid Room",
+			})
+		}
+
 		//collect all the errors 
 		if (errors.length > 0) {
 			const error = new Error('Invalid input');

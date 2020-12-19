@@ -1,16 +1,15 @@
 const { Router } = require('express');
 const router = Router();
-const { RoomController } = require('../controllers/room');
-const { BookingController } = require('../controllers/booking');
+const resolvers = require('../graphQL/resolvers');
 const { Authentication, IsAdmin } = require('../middlewares/auth');
 const { uploader } = require('../middlewares/multer')
 
-router.get('/', RoomController.getAllRoom);
-router.post('/add', IsAdmin, uploader.single('photo'), RoomController.addRoom)
-router.post('/edit/:id', IsAdmin, uploader.single('photo'), RoomController.updateRoom)
-router.delete('/delete/:id', IsAdmin, RoomController.deleteRoom)
+router.get('/:page', resolvers.getAllRooms);
+router.post('/add', IsAdmin, uploader.single('photo'), resolvers.addRoom)
+router.post('/edit/:id', IsAdmin, uploader.single('photo'), resolvers.updateRoom)
+router.delete('/delete/:id', IsAdmin, resolvers.deleteRoom)
 // router.get('/find/room', RoomController.search);
-router.get('/find/:id', RoomController.findById);
+router.get('/find/:id', resolvers.findById);
 
 
 module.exports = router;

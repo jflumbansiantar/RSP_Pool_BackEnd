@@ -29,9 +29,16 @@ exports.IsAdmin = (req, res, next) => {
   } else {
     try {
       const decoded = tokenVerifier(token);
-
       req.userData = decoded;
-      next();
+
+      if (req.userData.email === process.env.ADMIN_EMAIL) {
+        next();
+      } else {
+        res.status(400).json({
+          success: false,
+          message: "You are not authorized!",
+        });
+      }
     } catch (err) {
       next(err);
     }
