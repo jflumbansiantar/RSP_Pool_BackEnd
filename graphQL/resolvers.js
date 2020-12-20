@@ -92,8 +92,41 @@ module.exports = {
 			}
 		)
 	},
-	//getAllUser
-	//getUsers
+	getAllUsers: async function ( req, res ) {
+		const user = await User.find().sort({ createdAt: -1 })
+		res.status(200).json({
+			users: users.map(element => {
+				return {
+					...element._document,
+					_id: element._id.toString(),
+					createdAt: element.createdAt.toISOString(),
+					updatedAt: element.updatedAt.toISOString(),
+				}
+			})
+		})
+	},
+	getUser: async function ({ id }, req) {
+		const user = await User.findOne({
+			where: { id }
+		})
+		if (!user) {
+			res.status(400).json({
+				status: 'failed',
+				message: 'User not found.'
+			})
+		} else {
+			res.status(200).json({
+				users: users.map(element => {
+					return {
+						...element._document,
+						_id: element._id.toString(),
+						createdAt: element.createdAt.toISOString(),
+						updatedAt: element.updatedAt.toISOString(),
+					}
+				})
+			})
+		}
+	},
 
 	//CRUD Room
 	createRoom: async function ({ roomInput }, req, res) {
@@ -168,16 +201,23 @@ module.exports = {
 				id: room_id
 			}
 		})
-		res.status(200).json({
-			status: 'success',
-			message: 'Room successfully retrieved.',
-			data: {
-				...room._document,
-				id: room.id.toString(),
-				createdAt: element.createdAt.toISOString(),
-				updatedAt: element.updatedAt.toISOString(),
-			}
-		})
+		if (!room) {
+			res.status(400).json({
+				status: 'failed',
+				message: 'Room not found.'
+			})
+		} else {
+			res.status(200).json({
+				status: 'success',
+				message: 'Room successfully retrieved.',
+				data: {
+					...room._document,
+					id: room.id.toString(),
+					createdAt: element.createdAt.toISOString(),
+					updatedAt: element.updatedAt.toISOString(),
+				}
+			})
+		}
 	},
 	updateRoom: async function ({ id, roomInput }, req, res) {
 		const errors = [];
